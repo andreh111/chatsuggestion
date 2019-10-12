@@ -37,40 +37,16 @@ class MainActivity : AppCompatActivity() {
             if (!TextUtils.isEmpty(intext)) {
                 textin!!.text = intext
                 inputText!!.setText("")
-                conversations!!.add(
-                    //The createForRemoteUser() method is to be used when the message was not sent by the user
-                    //The createForLocalUser() method is to be used when the message was sent by your user; note that this doesn't require the user's UID
-                    FirebaseTextMessage.createForRemoteUser(
-                        intext, System.currentTimeMillis(), userId
-                    )
-                )
+                //add chat to conversation
+
+                //get 3 suggested messages
                 smartReplies()
             }
         }
     }
 
     private fun smartReplies() {
-        FirebaseNaturalLanguage.getInstance().smartReply.suggestReplies(conversations!!.takeLast(1))
-            .addOnSuccessListener(object : OnSuccessListener<SmartReplySuggestionResult> {
-                override fun onSuccess(result: SmartReplySuggestionResult) {
-                    if (result.getStatus() === SmartReplySuggestionResult.STATUS_NOT_SUPPORTED_LANGUAGE) {
-                        // The conversation's language isn't supported, so the
-                        // the result doesn't contain any suggestions.
-                    } else if (result.getStatus() === SmartReplySuggestionResult.STATUS_SUCCESS) {
-                        var replyText = ""
-                        for (suggestion in result.getSuggestions()) {
-                            replyText += suggestion.getText() + ". "
-                        }
-                        replies!!.text = replyText
-                    }
-                }
-            })
-            .addOnFailureListener(object : OnFailureListener {
-                override fun onFailure(e: Exception) {
-                    // Task failed with an exception
-                    // ...
-                }
-            })
+
 
     }
 
